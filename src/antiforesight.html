@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!-- (c) 2018 Jason Stumpf -->
+<title>Anti-Foresight</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+  svg {
+    display: block;
+    margin: auto;
+    max-height: 100%;
+  }
+</style>
+<div>
+<svg id="image"
+     viewBox="0 0 30 30"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <g id="block">
+      <rect x="0" y="0" width="1" height="1" fill="red" />
+    </g>
+    <g id="player">
+      <ellipse cx="0.5" cy="0" rx="0.5" ry="1" fill="green" />
+    </g>
+  </defs>
+  <rect id="bg" x="0" y="0" width="30" height="30" fill="blue" />
+  <use href="#block" x="3" y="20" />
+  <use href="#player" x="3" y="19" />
+</svg>
+</div>
