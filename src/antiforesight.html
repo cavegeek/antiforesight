@@ -20,6 +20,30 @@
     max-height: 100%;
   }
 </style>
+<script>
+
+const board = {x: 30, y: 30};
+
+function svgElem(tag) {
+  return document.createElementNS("http://www.w3.org/2000/svg", tag);
+}
+
+function block(x, y) {
+  let block = svgElem("use");
+  block.setAttribute("href", "#block");
+  block.setAttribute("x", x);
+  block.setAttribute("y", y);
+  document.getElementById('sprites').appendChild(block);
+}
+
+function init() {
+  for(i = 0; i < 200; ++i) {
+    block(Math.floor(Math.random()*board.x), Math.floor(Math.random()*board.y));
+  }
+}
+
+window.onload = init;
+</script>
 <div>
 <svg id="image"
      viewBox="0 0 30 30"
@@ -28,12 +52,16 @@
     <g id="block">
       <rect x="0" y="0" width="1" height="1" fill="red" />
     </g>
-    <g id="player">
+    <g id="player_sprite">
       <ellipse cx="0.5" cy="0" rx="0.5" ry="1" fill="green" />
     </g>
   </defs>
   <rect id="bg" x="0" y="0" width="30" height="30" fill="blue" />
-  <use href="#block" x="3" y="20" />
-  <use href="#player" x="3" y="19" />
+  <g id="sprites">
+    <use href="#block" x="3" y="20" />
+  </g>
+  <g id="#player">
+    <use href="#player_sprite" x="3" y="19" />
+  </g>
 </svg>
 </div>
