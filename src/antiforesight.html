@@ -72,20 +72,26 @@ window.onload = init;
      viewBox="0 0 30 30"
      xmlns="http://www.w3.org/2000/svg">
   <defs>
+    <linearGradient id="sky_grad" x1="0" x2="0.1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#202" />
+      <stop offset="50%" stop-color="#40B" />
+      <stop offset="90%" stop-color="#00C" />
+      <stop offset="100%" stop-color="#147" />
+    </linearGradient>
     <filter id="block_turb" filterUnits="objectBoundingBox" x="0" y="0" width="1" height="1">
       <feTurbulence id="turb" type="fractalNoise" baseFrequency="2 3" numOctaves="4" />
       <feComposite in="SourceGraphic" operator="atop" />
     </filter>
     <g id="block">
-      <rect x="0" y="0" width="1" height="1" fill="black" />
-      <rect x="0" y="0" width="1" height="1" fill="#AAC" filter="url(#block_turb") />
+      <rect x="0" y="0" width="1" height="1" fill="#FA8" />
+      <rect x="0" y="0" width="1" height="1" fill="#A00" filter="url(#block_turb") />
       <rect x="0" y="0" width="1" height="1" stroke="black" stroke-width="0.1" fill="none"/>
     </g>
     <g id="player_sprite">
       <ellipse cx="0.5" cy="0" rx="0.5" ry="1" fill="green" />
     </g>
   </defs>
-  <rect id="bg" x="0" y="0" width="30" height="30" fill="blue" />
+  <rect id="bg" x="0" y="0" width="30" height="30" fill="url(#sky_grad)" />
   <g id="sprites">
     <use href="#block" x="3" y="20" />
   </g>
