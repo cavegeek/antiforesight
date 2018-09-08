@@ -51,6 +51,18 @@ function genFloors() {
 
 function init() {
   genFloors();
+
+  document.addEventListener('keydown', move);
+}
+
+function move(event) {
+  switch(event.key) {
+    case 'ArrowRight':
+      const p = document.getElementById('player');
+      const x = p.getAttribute('x');
+      p.setAttribute('x', parseFloat(x) + 0.1);
+    break;
+  }
 }
 
 window.onload = init;
@@ -77,8 +89,6 @@ window.onload = init;
   <g id="sprites">
     <use href="#block" x="3" y="20" />
   </g>
-  <g id="player">
-    <use href="#player_sprite" x="3" y="19" />
-  </g>
+  <use id="player" href="#player_sprite" x="3" y="19" />
 </svg>
 </div>
