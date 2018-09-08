@@ -22,6 +22,8 @@
 </style>
 <script>
 
+'use strict';
+
 const board = {x: 30, y: 30};
 
 function svgElem(tag) {
@@ -37,11 +39,11 @@ function block(x, y) {
 }
 
 function genFloors() {
-  for(i = 0; i < 20; ++i) {
+  for(let i = 0; i < 20; ++i) {
     let y = Math.floor(Math.random()*board.y/3)*3;
     let start = Math.floor(Math.random()*board.x);
     let end = Math.min(start + Math.random()*8, board.x);
-    for(x = start; x < end; ++x) {
+    for(let x = start; x < end; ++x) {
       block(x,y);
     }
   }
