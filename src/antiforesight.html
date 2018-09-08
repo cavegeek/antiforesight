@@ -58,7 +58,11 @@ window.onload = init;
      viewBox="0 0 30 30"
      xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <g id="block">
+    <filter id="block_turb" filterUnits="objectBoundingBox" x="0" y="0" width="1" height="1">
+      <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.5 1.5" numOctaves="4" />
+      <feBlend in2="SourceGraphic" operator="atop" />
+    </filter>
+    <g id="block" filter="url(#block_turb)">
       <rect x="0" y="0" width="1" height="1" fill="red" />
     </g>
     <g id="player_sprite">
