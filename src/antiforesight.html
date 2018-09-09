@@ -55,12 +55,29 @@ function init() {
   document.addEventListener('keydown', move);
 }
 
+function horizontal(diff) {
+  const p = document.getElementById('player');
+  const x = parseInt(p.getAttribute('x'));
+  const m = document.getElementById('horizontal');
+  p.setAttribute('x', x+diff);
+  m.setAttribute('from', x);
+  m.setAttribute('to', x+diff);
+  m.setAttribute('dur', 1/4);
+  m.setAttribute("onend", "horizontal(" + diff + ")");
+  m.beginElement();
+}
+
 function move(event) {
-  switch(event.key) {
+  const m = document.getElementById('horizontal');
+  switch(event.code) {
+    case 'Space':
+      horizontal(1);
+    break;
     case 'ArrowRight':
-      const p = document.getElementById('player');
-      const x = p.getAttribute('x');
-      p.setAttribute('x', parseFloat(x) + 0.1);
+      m.setAttribute("onend", "horizontal(1)");
+    break;
+    case 'ArrowLeft':
+      m.setAttribute("onend", "horizontal(-1)");
     break;
   }
 }
@@ -95,6 +112,9 @@ window.onload = init;
   <g id="sprites">
     <use href="#block" x="3" y="20" />
   </g>
-  <use id="player" href="#player_sprite" x="3" y="19" />
+  <use id="player" href="#player_sprite" x="3" y="19">
+    <animate id="horizontal" attributeName="x" begin="beginEvent" />
+    <animate id="vertical" attributeName="y" begin="beginEvent" />
+  </use>
 </svg>
 </div>
