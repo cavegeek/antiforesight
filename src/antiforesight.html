@@ -27,6 +27,14 @@
 
 const board = {x: 30, y: 30};
 
+let player = {
+  x: 3,
+  y: 5,
+  dx: 1
+};
+
+let blocks = {}; // as an associative array
+
 function svgElem(tag) {
   return document.createElementNS("http://www.w3.org/2000/svg", tag);
 }
@@ -37,6 +45,7 @@ function block(x, y) {
   block.setAttribute("x", x);
   block.setAttribute("y", y);
   document.getElementById('sprites').appendChild(block);
+  blocks[[x,y]] = true;
 }
 
 function genFloors() {
@@ -53,34 +62,63 @@ function genFloors() {
 function init() {
   genFloors();
 
+  toPlayer('x', player.x);
+  toPlayer('y', player.y);
+
   document.addEventListener('keydown', move);
   document.getElementById('image').focus();
 }
 
-function horizontal(diff) {
-  const p = document.getElementById('player');
-  const x = parseInt(p.getAttribute('x'));
+function horizontal(x, dx) {
   const m = document.getElementById('horizontal');
-  p.setAttribute('x', x+diff);
   m.setAttribute('from', x);
-  m.setAttribute('to', x+diff);
-  m.setAttribute('dur', 1/4);
+  m.setAttribute('to', x+dx);
   m.beginElement();
 }
 
-let player = {
-  dx: 1
+function vertical(y, dy) {
+  const m = document.getElementById('vertical');
+  m.setAttribute('from', y);
+  m.setAttribute('to', y+dy);
+  m.beginElement();
 }
 
-function next() {
-  horizontal(player.dx);
+function toPlayer(attribute, value) {
+  document.getElementById('player').setAttribute(attribute, value);
+}
+
+function nextX() {
+  const x = player.x;
+  const dx = player.dx
+  const y = player.y;
+  if(!blocks[[x+dx, y]] && !blocks[[x+dx, y-1]]) {
+    horizontal(x, dx);
+    player.x = x+dx;
+  } else {
+    horizontal(x, 0);
+    player.dx = 0;
+  }
+  toPlayer('x', player.x);
+}
+
+function nextY() {
+  const x = player.x;
+  const y = player.y;
+  if(!blocks[[x, y+1]]) {
+    vertical(y, 1);
+    player.y = y+1;
+  } else {
+    vertical(0);
+  }
+  toPlayer('y', player.y);
 }
 
 function move(event) {
   const m = document.getElementById('horizontal');
   switch(event.code) {
     case 'Space':
-      next();
+      nextX();
+      nextY();
     break;
     case 'ArrowRight':
       player.dx = 1;
@@ -119,11 +157,10 @@ window.onload = init;
   </defs>
   <rect id="bg" x="0" y="0" width="30" height="30" fill="url(#sky_grad)" />
   <g id="sprites">
-    <use href="#block" x="3" y="20" />
   </g>
-  <use id="player" href="#player_sprite" x="3" y="19">
-    <animate id="horizontal" attributeName="x" begin="beginEvent" onend="next()" />
-    <animate id="vertical" attributeName="y" begin="beginEvent" onend="next()" />
+  <use id="player" href="#player_sprite">
+    <animate id="horizontal" attributeName="x" begin="beginEvent" dur="0.25" onend="nextX()" />
+    <animate id="vertical" attributeName="y" begin="beginEvent" dur="0.25" onend="nextY()" />
   </use>
 </svg>
 </div>
