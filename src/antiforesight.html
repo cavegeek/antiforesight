@@ -65,21 +65,28 @@ function horizontal(diff) {
   m.setAttribute('from', x);
   m.setAttribute('to', x+diff);
   m.setAttribute('dur', 1/4);
-  m.setAttribute("onend", "horizontal(" + diff + ")");
   m.beginElement();
+}
+
+let player = {
+  dx: 1
+}
+
+function next() {
+  horizontal(player.dx);
 }
 
 function move(event) {
   const m = document.getElementById('horizontal');
   switch(event.code) {
     case 'Space':
-      horizontal(1);
+      next();
     break;
     case 'ArrowRight':
-      m.setAttribute("onend", "horizontal(1)");
+      player.dx = 1;
     break;
     case 'ArrowLeft':
-      m.setAttribute("onend", "horizontal(-1)");
+      player.dx = -1;
     break;
   }
 }
@@ -115,8 +122,8 @@ window.onload = init;
     <use href="#block" x="3" y="20" />
   </g>
   <use id="player" href="#player_sprite" x="3" y="19">
-    <animate id="horizontal" attributeName="x" begin="beginEvent" />
-    <animate id="vertical" attributeName="y" begin="beginEvent" />
+    <animate id="horizontal" attributeName="x" begin="beginEvent" onend="next()" />
+    <animate id="vertical" attributeName="y" begin="beginEvent" onend="next()" />
   </use>
 </svg>
 </div>
