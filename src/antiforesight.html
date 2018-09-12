@@ -133,6 +133,12 @@ window.onload = init;
     </g>
     <g id="player_sprite">
       <ellipse cx="0.5" cy="0" rx="0.5" ry="1" fill="green" />
+      <circle cx="0" cy="0.8" r="0.2" fill="blue">
+        <animate attributeName="cx" dur="0.25" from="0" to="1" repeatCount="indefinite" />
+      </circle>
+      <circle cx="1" cy="0.8" r="0.2" fill="blue">
+        <animate attributeName="cx" dur="0.25" from="1" to="0" repeatCount="indefinite" />
+      </circle>
     </g>
   </defs>
   <rect id="bg" x="0" y="0" width="30" height="30" fill="url(#sky_grad)" />
