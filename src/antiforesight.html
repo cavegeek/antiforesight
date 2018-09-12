@@ -69,56 +69,36 @@ function init() {
   document.getElementById('image').focus();
 }
 
-function horizontal(x, dx) {
-  const m = document.getElementById('horizontal');
-  m.setAttribute('from', x);
-  m.setAttribute('to', x+dx);
-  m.beginElement();
+function toPlayer() {
+  document.getElementById('player').setAttribute('x', player.x);
+  document.getElementById('player').setAttribute('y', player.y);
 }
 
-function vertical(y, dy) {
-  const m = document.getElementById('vertical');
-  m.setAttribute('from', y);
-  m.setAttribute('to', y+dy);
-  m.beginElement();
-}
-
-function toPlayer(attribute, value) {
-  document.getElementById('player').setAttribute(attribute, value);
-}
-
-function nextX() {
-  const x = player.x;
-  const dx = player.dx
-  const y = player.y;
-  if(!blocks[[x+dx, y]] && !blocks[[x+dx, y-1]]) {
-    horizontal(x, dx);
-    player.x = x+dx;
-  } else {
-    horizontal(x, 0);
-    player.dx = 0;
-  }
-  toPlayer('x', player.x);
-}
-
-function nextY() {
+function next() {
   const x = player.x;
   const y = player.y;
-  if(!blocks[[x, y+1]]) {
-    vertical(y, 1);
-    player.y = y+1;
-  } else {
-    vertical(0);
-  }
-  toPlayer('y', player.y);
+  const next = x+player.dx;
+  const dy = (!blocks[[x, y+1]]) ? 1 : 0;
+  const dx = (
+      !blocks[[next, y]] &&
+      !blocks[[next, y-1]] &&
+      !blocks[[next, y+dy]])
+      ? player.dx : 0;
+  const m = document.getElementById('player_motion');
+  m.setAttribute('path', "M" + -dx + "," + -dy + " l" + dx + "," + dy);
+  m.beginElement();
+  player.x += dx;
+  player.y += dy;
+  player.dx = dx;
+  player.dy = dy;
+  toPlayer();
 }
 
 function move(event) {
   const m = document.getElementById('horizontal');
   switch(event.code) {
     case 'Space':
-      nextX();
-      nextY();
+      next();
     break;
     case 'ArrowRight':
       player.dx = 1;
@@ -159,8 +139,8 @@ window.onload = init;
   <g id="sprites">
   </g>
   <use id="player" href="#player_sprite">
-    <animate id="horizontal" attributeName="x" begin="beginEvent" dur="0.25" onend="nextX()" />
-    <animate id="vertical" attributeName="y" begin="beginEvent" dur="0.25" onend="nextY()" />
+    <animateMotion id="player_motion"
+        begin="indefinite" dur="0.25" onend="next()" path="" />
   </use>
 </svg>
 </div>
