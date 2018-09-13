@@ -20,6 +20,11 @@
     margin: auto;
     max-height: 100%;
   }
+
+  text {
+    font-size: 1px;
+    font-style: fixed;
+  }
 </style>
 <script>
 
@@ -148,5 +153,17 @@ window.onload = init;
     <animateMotion id="player_motion"
         begin="indefinite" dur="0.25" onend="next()" path="" />
   </use>
+  <g id="manual">
+    <rect x="0.5" y="11.5" width="29" height="7" fill="black" />
+    <text x="1" y="13" textLength="28" stroke="white" fill="black" stroke-width="0.03">
+      Jump or walljump using &lt;space&gt;.
+    </text>
+    <text x="1" y="15" textLength="28" stroke="white" fill="red" stroke-width="0.03">
+      Do NOT follow the line. KEEP OFF LINE.
+    </text>
+    <text x="1" y="17" textLength="28" stroke="white" fill="black" stroke-width="0.03">
+      Press &lt;space&gt; to begin.
+    </text>
+  </g>
 </svg>
 </div>
