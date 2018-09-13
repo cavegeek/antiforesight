@@ -35,7 +35,9 @@ const board = {x: 30, y: 30};
 let player = {
   x: 3,
   y: 5,
-  dx: 1
+  dx: 1,
+  jumpForce: 0,
+  willJump: false
 };
 
 let blocks = {}; // as an associative array
@@ -95,12 +97,21 @@ function next() {
   const x = player.x;
   const y = player.y;
   const next = x+player.dx;
-  const dy = (!blocks[[x, y+1]]) ? 1 : 0;
-  const dx = (
-      !blocks[[next, y]] &&
-      !blocks[[next, y-1]] &&
-      !blocks[[next, y+dy]])
-      ? player.dx : 0;
+  const onBlock = blocks[[x,y+1]] || blocks[[next,y+1]];
+  const hitBlockSide = (
+      blocks[[next, y]] ||
+      blocks[[next, y-1]] ||
+      (blocks[[next, y+player.dy]] && !onBlock));
+  const blockOverHead = blocks[[x,y-2]];
+  const dx = hitBlockSide ? -player.dx : player.dx;
+  const startJump = player.willJump && (onBlock || hitBlockSide);
+  const dy = (!blockOverHead && (startJump || player.jumpForce > 0)) ? -1 : (onBlock ? 0 : 1);
+  if(startJump) {
+    player.jumpForce = 3;
+  }
+  if(dy >= 0) {
+    player.jumpForce = 0;
+  }
   const m = document.getElementById('player_motion');
   m.setAttribute('path', "M" + -dx + "," + -dy + " l" + dx + "," + dy);
   m.beginElement();
@@ -108,20 +119,24 @@ function next() {
   player.y += dy;
   player.dx = dx;
   player.dy = dy;
+  player.willJump = false;
+  player.jumpForce--;
   toPlayer();
 }
+
+let unstarted = true;
 
 function move(event) {
   const m = document.getElementById('horizontal');
   switch(event.code) {
     case 'Space':
-      next();
-    break;
-    case 'ArrowRight':
-      player.dx = 1;
-    break;
-    case 'ArrowLeft':
-      player.dx = -1;
+      if(unstarted) {
+        document.getElementById('manual').style.display = 'none';
+        next();
+        unstarted = false;
+        return;
+      }
+      player.willJump = true;
     break;
   }
 }
